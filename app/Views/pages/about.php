@@ -2,6 +2,6 @@
 
 <?= $this->section('content') ?>
 <div>
-    <p>Kontol Ireng About</p>
+    <p>About</p>
 </div>
 <?= $this->endSection() ?>

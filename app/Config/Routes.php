@@ -38,7 +38,11 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 $routes->get('/about', 'About::index');
 $routes->get('/comic', 'Comic::index');
+$routes->get('/comic/(:segment)', 'Comic::detail/$1');
 
+$routes->get('/comic/action/create', 'Comic::create');
+$routes->post('/comic/action/create', 'Comic::createaction');
+$routes->delete('/comic/action/delete/(:segment)', 'Comic::deleteaction/$1');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
