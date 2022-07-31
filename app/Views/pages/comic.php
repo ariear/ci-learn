@@ -36,7 +36,7 @@
       <td><?= $comic['penerbit'] ?></td>
       <td class="d-flex">
         <a href="/comic/<?= $comic['slug'] ?>" class="btn btn-primary" >Detail</a>
-        <button class="btn btn-warning mx-2">Edit</button>
+        <a href="/comic/<?= $comic['slug'] ?>/edit" class="btn btn-warning mx-2" >Edit</a>
         <form action="/comic/action/delete/<?= $comic['id'] ?>" method="post">
           <?= csrf_field() ?>
           <input type="hidden" name="_method" value="DELETE">

@@ -43,6 +43,8 @@ $routes->get('/comic/(:segment)', 'Comic::detail/$1');
 $routes->get('/comic/action/create', 'Comic::create');
 $routes->post('/comic/action/create', 'Comic::createaction');
 $routes->delete('/comic/action/delete/(:segment)', 'Comic::deleteaction/$1');
+$routes->get('/comic/(:segment)/edit', 'Comic::edit/$1');
+$routes->put('/comic/action/edit/(:segment)', 'Comic::editaction/$1');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

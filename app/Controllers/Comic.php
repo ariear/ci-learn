@@ -73,4 +73,51 @@ class Comic extends BaseController
 
         return redirect()->to('/comic')->with('deleted', 'Comic Success Deleted');
     }
+
+    public function edit($slug){
+        $comic = new ComicModel();
+        $getComic = $comic->where('slug' , $slug)->first();
+        
+        return view('pages/editcomic',[
+            'title' => 'Edit',
+            'validation' => Services::validation(),
+            'comic' => $getComic
+        ]);
+    }
+
+    public function editaction($id){
+        $oldComic = new ComicModel();
+        $getOldComic = $oldComic->getComic($this->request->getVar('slug'));
+        if ($getOldComic['judul'] == $this->request->getVar('judul')) {
+            $rule_judul = 'required';
+        }else {
+            $rule_judul = 'required|is_unique[comic.judul]';
+        }
+
+        $validation = $this->validate([
+            'judul' => $rule_judul,
+            'penulis' => 'required',
+            'penerbit' => 'required',
+            'sampul' => 'required',
+        ]);
+
+        if (!$validation) {
+            return redirect()->to('/comic/' . $this->request->getVar('slug') . '/edit' )->withInput()->with('validation' , Services::validation());
+        }
+
+        $slug = url_title($this->request->getVar('judul'));
+
+        $comic = new ComicModel();
+
+        $comic->save([
+            'id' => $id,
+            'judul' => $this->request->getVar('judul'),
+            'slug' => $slug,
+            'penulis' => $this->request->getVar('penulis'),
+            'penerbit' => $this->request->getVar('penerbit'),
+            'sampul' => $this->request->getVar('sampul'),
+        ]);
+        
+        return redirect()->to("/comic")->with('message', 'Edit Comic Sucessfully');
+    }
 }

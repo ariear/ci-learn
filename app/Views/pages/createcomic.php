@@ -11,17 +11,17 @@
         <p class="text-danger"><?= $validation->getError('judul') ?></p>
         </div>
         <div class="form-floating mb-3">
-        <input type="text" name="penulis" class="form-control" id="penulis" placeholder="penulis" value="<?= old('judul') ?>">
+        <input type="text" name="penulis" class="form-control" id="penulis" placeholder="penulis" value="<?= old('penulis') ?>">
         <label for="penulis">Penulis</label>
         <p class="text-danger"><?= $validation->getError('penulis') ?></p>
         </div>
         <div class="form-floating mb-3">
-        <input type="text" name="penerbit" class="form-control" id="penerbit" placeholder="penerbit" value="<?= old('judul') ?>">
+        <input type="text" name="penerbit" class="form-control" id="penerbit" placeholder="penerbit" value="<?= old('penerbit') ?>">
         <label for="penerbit">Penerbit</label>
         <p class="text-danger"><?= $validation->getError('penerbit') ?></p>
         </div>
         <div class="form-floating mb-3">
-        <input type="text" name="sampul" class="form-control" id="sampul" placeholder="Sampul" value="<?= old('judul') ?>">
+        <input type="text" name="sampul" class="form-control" id="sampul" placeholder="Sampul" value="<?= old('sampul') ?>">
         <label for="sampul">Sampul</label>
         <p class="text-danger"><?= $validation->getError('sampul') ?></p>
         </div>
