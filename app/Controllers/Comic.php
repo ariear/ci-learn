@@ -45,12 +45,22 @@ class Comic extends BaseController
             'judul' => 'required|is_unique[comic.judul]',
             'penulis' => 'required',
             'penerbit' => 'required',
-            'sampul' => 'required',
+            'sampul' => 'is_image[sampul]|mime_in[sampul,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
         ]);
 
         if (!$validation) {
-            return redirect()->to('/comic/action/create')->withInput()->with('validation' , Services::validation());
+            return redirect()->back()->withInput()->with('validation' , Services::validation());
         }
+        
+        $fileSampul = $this->request->getFile('sampul');
+
+        if ($fileSampul->getError() == 4) {
+            $sampulName = 'default.png';
+        }else{
+            $sampulName = $fileSampul->getRandomName();
+            $fileSampul->move('img', $sampulName);
+        }
+
 
         $slug = url_title($this->request->getVar('judul'));
 
@@ -61,14 +71,22 @@ class Comic extends BaseController
             'slug' => $slug,
             'penulis' => $this->request->getVar('penulis'),
             'penerbit' => $this->request->getVar('penerbit'),
-            'sampul' => $this->request->getVar('sampul'),
+            'sampul' => $sampulName,
         ]);
+
 
         return redirect()->to('/comic')->with('message', 'Add Comic Sucessfully');
     }
 
     public function deleteaction($id){
         $comic = new ComicModel();
+
+        $getComic = $comic->find($id);
+
+        if ($getComic['sampul'] != 'default.png' ) {
+            unlink('img/' . $getComic['sampul']);
+        }
+
         $comic->delete($id);
 
         return redirect()->to('/comic')->with('deleted', 'Comic Success Deleted');
@@ -98,11 +116,24 @@ class Comic extends BaseController
             'judul' => $rule_judul,
             'penulis' => 'required',
             'penerbit' => 'required',
-            'sampul' => 'required',
+            'sampul' => 'is_image[sampul]|mime_in[sampul,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
         ]);
 
         if (!$validation) {
             return redirect()->to('/comic/' . $this->request->getVar('slug') . '/edit' )->withInput()->with('validation' , Services::validation());
+        }
+
+        $fileSampul = $this->request->getFile('sampul');
+
+        if ($fileSampul->getError() == 4) {
+            $sampulName = $this->request->getVar('sampulLama');
+        }else{
+            $sampulName = $fileSampul->getRandomName();
+            $fileSampul->move('img', $sampulName);
+
+            if ($this->request->getVar('sampulLama') != 'default.png' ) {
+                unlink('img/' . $this->request->getVar('sampulLama'));
+            }
         }
 
         $slug = url_title($this->request->getVar('judul'));
@@ -115,7 +146,7 @@ class Comic extends BaseController
             'slug' => $slug,
             'penulis' => $this->request->getVar('penulis'),
             'penerbit' => $this->request->getVar('penerbit'),
-            'sampul' => $this->request->getVar('sampul'),
+            'sampul' => $sampulName,
         ]);
         
         return redirect()->to("/comic")->with('message', 'Edit Comic Sucessfully');
