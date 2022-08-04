@@ -11,11 +11,11 @@ class Comic extends BaseController
     public function index()
     {
         $comicModel = new ComicModel();
-        $comic = $comicModel->getComic();
 
         return view('pages/comic',[
             'title' => 'Comic',
-            'comics' => $comic
+            'comics' => $comicModel->paginate(5),
+            'pager' => $comicModel->pager
         ]);
     }
 
